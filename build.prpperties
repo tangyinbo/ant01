@@ -1,0 +1,4 @@
+build_dir = build
+build_classes = build/classes
+build_src = build/src
+build_dist = build/dist

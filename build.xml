@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="execute">
+	<fileset id="src_dir" dir="src" includes="**/**" excludes="**/Test**"></fileset>
+	<!--创建文件夹-->
+	<target name="init">
+		<delete dir="build"></delete>
+		<mkdir dir="build"/>
+		<mkdir dir="build/src"/>
+		<mkdir dir="build/classes"/>
+		<mkdir dir="build/dist"/>
+	</target>
+	
+	<!--拷贝src到build/src-->
+	<target name="copySrc" depends="init">
+		<copy todir="build/src">
+			<fileset refid="src_dir"></fileset>
+		</copy>
+	</target>
+	
+	<!--编译源代码-->
+	<target name="compile" depends="copySrc,init">
+		<javac destdir="build/classes" srcdir="src"></javac>
+	</target>
+	
+	<!--打包-->
+	<target name="package" depends="compile">
+		<jar destfile="build/dist/hello.jar" basedir="build/classes">
+			<manifest>
+				<attribute name="Main-Class" value="cn.edu.ant.HelloAnt"/>
+				<attribute name="author" value="tyb"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<!--运行-->
+	<target name="execute" depends="package">
+		<echo>classpath ------------</echo>
+		<java classname="cn.edu.ant.HelloAnt" classpath="build/classes">
+			<!--<arg value="XXX"/> main 方法的参数-->
+		</java>
+		<echo>jar------------</echo>
+		<java jar="build/dist/hello.jar" fork="true"></java>
+	</target>
+</project>

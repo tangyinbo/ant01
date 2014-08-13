@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="execute">
+	<fileset id="src_dir" dir="src" includes="**/**" excludes="**/Test**"></fileset>
+	<!--property 我们的常量可以定义为property-->
+	<property name="build_dir" value="build"></property>
+	<!--路径常量vlaue 最好用location 他会自动根据操作系统改变分隔符-->
+	<property name="build_classes" location="build/classes"></property>
+	<property name="build_src" location="build/src"></property>
+	<property name="build_dist" location="build/dist"></property>
+	
+	<!--创建文件夹-->
+	<target name="init">
+		<delete dir="${build_dir}"></delete>
+		<mkdir dir="${build_dir}"/>
+		<mkdir dir="${build_src}"/>
+		<mkdir dir="${build_classes}"/>
+		<mkdir dir="${build_dist}"/>
+	</target>
+	
+	<!--拷贝src到build/src-->
+	<target name="copySrc" depends="init">
+		<copy todir="${build_src}">
+			<fileset refid="src_dir"></fileset>
+		</copy>
+	</target>
+	
+	<!--编译源代码-->
+	<target name="compile" depends="copySrc,init">
+		<javac destdir="${build_classes}" srcdir="src"></javac>
+	</target>
+	
+	<!--打包-->
+	<target name="package" depends="compile">
+		<jar destfile="${build_dist}/hello.jar" basedir="${build_classes}">
+			<manifest>
+				<attribute name="Main-Class" value="cn.edu.ant.HelloAnt"/>
+				<attribute name="author" value="tyb"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<!--运行-->
+	<target name="execute" depends="package">
+		<echo>classpath ------------</echo>
+		<java classname="cn.edu.ant.HelloAnt" classpath="${build_classes}">
+			<!--<arg value="XXX"/> main 方法的参数-->
+		</java>
+		<echo>jar------------</echo>
+		<java jar="${build_dist}/hello.jar" fork="true"></java>
+	</target>
+</project>
