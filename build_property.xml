@@ -4,9 +4,9 @@
 	<!--property 我们的常量可以定义为property-->
 	<property name="build_dir" value="build"></property>
 	<!--路径常量vlaue 最好用location 他会自动根据操作系统改变分隔符-->
-	<property name="build_classes" location="build/classes"></property>
-	<property name="build_src" location="build/src"></property>
-	<property name="build_dist" location="build/dist"></property>
+	<property name="build_classes" location="${build_dir}/classes"></property>
+	<property name="build_src" location="${build_dir}/src"></property>
+	<property name="build_dist" location="${build_dir}/dist"></property>
 	
 	<!--创建文件夹-->
 	<target name="init">
